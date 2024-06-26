@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookings by Date</title>
-    <!-- Include Tailwind CSS -->
+   
     <link href="https://cdn.tailwindcss.com" rel="stylesheet">
 </head>
 
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody id="bookingTable">
-                    <!-- Booking details will be dynamically loaded here -->
+                    
                 </tbody>
             </table>
         </div>
@@ -43,10 +43,10 @@
                 const response = await fetch(`/view/${checkInDate}`);
                 const bookings = await response.json();
 
-                document.getElementById('dateDisplay').textContent = checkInDate; // Display the check-in date
+                document.getElementById('dateDisplay').textContent = checkInDate;
 
                 const bookingTable = document.getElementById('bookingTable');
-                bookingTable.innerHTML = ''; // Clear any existing rows
+                bookingTable.innerHTML = ''; 
 
                 bookings.forEach(booking => {
                     const row = document.createElement('tr');
@@ -67,4 +67,4 @@
     </script>
 </body>
 
-</html>
+</html> -->

@@ -11,37 +11,32 @@
 <body class="bg-gray-100 flex items-center justify-center h-screen">
     <div class="text-center">
         <h1 class="text-4xl font-bold text-gray-800 mb-4">Hotel booking</h1>
-        <p class="text-gray-600 text-lg">Explore!</p>
+        <p class="text-gray-600 text-lg">Explore !</p>
         <div class="mt-6">
             <a href="/add" class="bg-blue-500 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-600">Book Room</a>
         </div>
         <div class="mt-6">
-            <input type="date" id="checkInDate" name="checkInDate" class="border-2 border-zinc-950 mb-2"
-                placeholder="Select check-in date">
-            <button class="border-1 bg-cyan-700 px-8 py-4 rounded text-white" onclick="searchByCheckInDate()">
-                Search
+            <input type="text" id="checkOut" name="checkOut" class="border-2 border-zinc-950 mb-2"
+            placeholder="Enter day to view">
+            <button class="border-1 bg-cyan-700 px-8 py-4 rounded text-white" onClick='redirectTobooking()' >
+                search
+            </div>
             </button>
-        </div>
-        <div class="mt-6">
-            <a href="/view"
-                class="block mt-6 bg-blue-600 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-700 text-center">View
-                Booking</a>
-        </div>
+            <a href="/view" class="block mt-6 bg-blue-600 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-700 text-center">View Booking</a>
     </div>
-
     <script>
-        function searchByCheckInDate() {
-            const checkInDate = document.getElementById('checkInDate').value;
-            if (checkInDate) {
-                const url = `/view/${checkInDate}`;
-                console.log(url);
-                window.location.href = url;
-            } else {
-                alert('Please select a check-in date.');
-            }
-        }
-    </script>
+        function redirectTobooking() {
+          const checkOut = document.getElementById('checkOut').value;
 
+          const url = `/view/${checkOut}`;
+
+          console.log(checkOut);
+
+          console.log(url);
+
+          window.location.href = url;
+      }
+      </script>
 </body>
 
 </html>
