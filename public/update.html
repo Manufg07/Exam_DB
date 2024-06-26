@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200">
+    <nav class="flex justify-end gap-1 items-center pt-3">
+        <a href="/">
+            <button class="bg-red-600 text-white border-none rounded-md py-2 px-3 cursor-pointer">Home</button>
+        </a>
+        <a href="/add">
+            <button class="bg-blue-600 text-white border-none rounded-md py-2 px-3 cursor-pointer">Book</button>
+        </a>
+    </nav>
+    <div class="w-[50%] bg-white mt-5 mx-auto rounded-lg p-6">
+        <div class="text-xl font-semibold mb-4">Update</div>
+        <form method="POST" id="updateBookingForm">
+            <div class="mb-4">
+                <label for="room" class="block mb-1">Room</label>
+                <input type="text" name="room" id="room" class="w-full border border-gray-300 rounded py-2 px-3" required />
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block mb-1">Name</label>
+                <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded py-2 px-3" required />
+            </div>
+            <div class="mb-4">
+                <label for="checkIn" class="block mb-1">checkIn</label>
+                <textarea name="checkIn" id="checkIn" class="w-full border border-gray-300 rounded py-2 px-3" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="checkOut" class="block mb-1">checkOut</label>
+                <textarea name="checkOut" id="checkOut" class="w-full border border-gray-300 rounded py-2 px-3" required></textarea>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">Update</button>
+        </form>
+    </div>
+    <script>
+    async function loadBooking() {
+      const room = window.location.pathname.split('/').pop();
+      try {
+        const response = await fetch(`/api/view/${room}`);
+        if (!response.ok) {
+          throw new Error(`Failed to load booking: ${response.statusText}`);
+        }
+        const booking = await response.json();
+        document.getElementById('room').value = booking.room;
+        document.getElementById('name').value = booking.name;
+        document.getElementById('checkIn').value = booking.checkIn;
+        document.getElementById('checkOut').value = booking.checkOut;
+        document.getElementById('updateBookingForm').dataset.room = room;
+      } catch (error) {
+        console.error('Error loading booking:', error);
+        const feedback = document.getElementById('feedback');
+        if (feedback) {
+          feedback.innerText = 'Error loading booking.';
+          feedback.className = 'text-red-600';
+        }
+      }
+    }
+
+    async function updateBooking(event) {
+      event.preventDefault();
+      const form = document.getElementById('updateBookingForm');
+      if (!form) {
+        console.error('Form not found.');
+        return;
+      }
+      const room = form.dataset.room;
+      const data = {
+        name: document.getElementById('name').value,
+        checkIn: document.getElementById('checkIn').value,
+        checkOut: document.getElementById('checkOut').value
+      };
+      try {
+        const response = await fetch(`/api/view/${room}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          window.location.href = `/view/${room}`;
+        } else {
+          console.error('Error updating booking:', await response.json());
+        }
+      } catch (error) {
+        console.error('Error updating booking:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBooking();
+      const updateBookingForm = document.getElementById('updateBookingForm');
+      if (updateBookingForm) {
+        updateBookingForm.addEventListener('submit', updateBooking);
+      }
+    });
+
+    </script>
+</body>
+</html>

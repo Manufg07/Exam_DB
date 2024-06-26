@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200">
+    <nav class="flex justify-end gap-1 items-center pt-3">
+        <a href="/add">
+            <button class="bg-red-600 text-white border-none rounded-md py-2 px-3 cursor-pointer">Home</button>
+        </a>
+        <a href="/add">
+            <button class="bg-blue-600 text-white border-none rounded-md py-2 px-3 cursor-pointer">Add Book</button>
+        </a>
+    </nav>
+    <div class="pt-8 text-center font-semibold text-4xl">All Bookings</div>
+    <div class="mt-5 mx-auto w-[80%] bg-white p-6 rounded-lg">
+        <table class="w-full table-auto border-collapse">
+            <thead>
+                <tr>
+                    <th class="border px-4 py-2">Room</th>
+                    <th class="border px-4 py-2">Name</th>
+                    <th class="border px-4 py-2">checkIn</th>
+                    <th class="border px-4 py-2">checkOut</th>
+                    <th class="border px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="bookingTable">
+                <!-- Tasks will be dynamically loaded here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function loadBookings() {
+            try {
+                const response = await fetch('/api/bookings');
+                const bookings = await response.json();
+                const bookingTable = document.getElementById('bookingTable');
+                bookingTable.innerHTML = '';
+                bookings.forEach(booking => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="border px-4 py-2">${booking.room}</td>
+                        <td class="border px-4 py-2">${booking.name}</td>
+                        <td class="border px-4 py-2">${booking.checkIn}</td>
+                        <td class="border px-4 py-2">${booking.checkOut}</td>
+                        <td class="border px-4 py-2">
+                            <a href="/update/${booking.room}" class="bg-yellow-500 text-white px-2 py-1 rounded">Update</a>
+                            <button onclick="deleteBooking('${booking.room}')" class="bg-red-600 text-white px-2 py-1 rounded">Delete</button>
+                        </td>
+                    `;
+                    bookingTable.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+        }
+        async function deleteBooking(room) {
+            try {
+                const response = await fetch(`/api/view/${room}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    console.log('Booking deleted successfully');
+                    loadBookings(); // Reload tasks after deletion
+                } else {
+                    console.error('Failed to delete booking:', await response.json());
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', loadBookings);
+    </script>
+</body>
+</html>

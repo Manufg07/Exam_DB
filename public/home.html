@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Hotel booking</h1>
+        <p class="text-gray-600 text-lg">Explore!</p>
+        <div class="mt-6">
+            <a href="/add" class="bg-blue-500 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-600">Book Room</a>
+        </div>
+        <div class="mt-6">
+            <input type="date" id="checkInDate" name="checkInDate" class="border-2 border-zinc-950 mb-2"
+                placeholder="Select check-in date">
+            <button class="border-1 bg-cyan-700 px-8 py-4 rounded text-white" onclick="searchByCheckInDate()">
+                Search
+            </button>
+        </div>
+        <div class="mt-6">
+            <a href="/view"
+                class="block mt-6 bg-blue-600 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-700 text-center">View
+                Booking</a>
+        </div>
+    </div>
+
+    <script>
+        function searchByCheckInDate() {
+            const checkInDate = document.getElementById('checkInDate').value;
+            if (checkInDate) {
+                const url = `/view/${checkInDate}`;
+                console.log(url);
+                window.location.href = url;
+            } else {
+                alert('Please select a check-in date.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
